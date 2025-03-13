@@ -1,169 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday Sharon!</title>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      overflow: hidden;
-    }
-    .card-container {
-      position: relative;
-      width: 90%;
-      max-width: 400px;
-      height: 500px;
-      perspective: 1000px;
-    }
-    .card {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      transform: rotateY(0deg);
-      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-      backface-visibility: hidden;
-      opacity: 0;
-    }
-    .card.active {
-      opacity: 1;
-    }
-    .card h1 {
-      font-size: 2rem;
-      margin: 0;
-      color: #ff6f61;
-    }
-    .card p {
-      font-size: 1.2rem;
-      color: #333;
-    }
-    .candles {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-    }
-    .candle {
-      width: 10px;
-      height: 40px;
-      background: #ff6f61;
-      margin: 0 5px;
-      position: relative;
-      animation: flicker 1.5s infinite;
-    }
-    .candle::before {
-      content: '';
-      width: 15px;
-      height: 15px;
-      background: #ffcc00;
-      border-radius: 50%;
-      position: absolute;
-      top: -10px;
-      left: -2.5px;
-    }
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-    .emojis {
-      font-size: 2rem;
-      margin: 20px 0;
-      animation: float 3s infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    button {
-      background: #ff6f61;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-top: 20px;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #ff3b2f;
-    }
-    #confetti {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developers' Feud</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #282c36;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #1e1f26;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        .question-card {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .answer-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .answer {
+            width: 80%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid #555;
+            border-radius: 5px;
+            background: #555;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .revealed {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+            transform: scale(1.1);
+        }
+        .strike {
+            color: red;
+            font-size: 50px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <div class="card-container">
-    <div class="card active">
-      <h1>🎉 Sharon 🎉</h1>
-      <p>Happy Birthday my love!</p>
-      <div class="candles">
-        <div class="candle"></div>
-        <div class="candle"></div>
-        <div class="candle"></div>
-      </div>
-      <button id="next-btn">Yayy 🎉✨🌸</button>
+    <div class="container">
+        <h1>Developers' Feud</h1>
+        
+        <div id="game-area">
+        </div>
     </div>
-    <div class="card">
-      <p>Look at you aging like fine wine 💖</p>
-      <div class="emojis">😊🎈🎁</div>
-      <button id="next-btn">Yayy 🎉✨🌸</button>
-    </div>
-    <div class="card">
-      <p>Thank you for being the huge blessing you are in my life.</p>
-      <div class="emojis">🎉✨🌸</div>
-      <button id="next-btn">Yayy 🎉✨🌸</button>
-    </div>
-    <div class="card">
-      <p>And I'm not just saying this because you are my blesser 😊</p>
-      <div class="emojis">💫🎊🍰</div>
-      <button id="next-btn">I Love You 💖</button>
-    </div>
-  </div>
-  <canvas id="confetti"></canvas>
-  <script>
-    const cards = document.querySelectorAll('.card');
-    const nextBtns = document.querySelectorAll('#next-btn');
-    let currentCardIndex = 0;
 
-    function fireConfetti() {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }
+    <script>
+        let strikes = 0;
+        let currentQuestion = 0;
+        const questions = [
+            { question: "Name something a developer can’t live without.", answers: ["Laptop - 40 pts", "Internet - 30 pts", "Coffee - 20 pts", "A debugger - 5 pts"] },
+            { question: "What’s the first thing a programmer does when their code doesn’t work?", answers: ["Google the error - 40 pts", "Restart the computer - 30 pts", "Blame the intern - 20 pts", "Debug line by line - 5 pts"] },
+            { question: "Name the most annoying error a developer faces.", answers: ["Null pointer exception - 40 pts", "Syntax error - 30 pts", "Infinite loop - 20 pts", "Works on my machine issue - 5 pts"] },
+            { question: "What’s a developer’s worst nightmare?", answers: ["Production server going down - 40 pts", "A missing semicolon - 30 pts", "Debugging someone else's code - 20 pts", "Client saying ‘Can you make a small change?’ - 5 pts"] },
+            { question: "What’s the most used app by developers?", answers: ["VS Code - 40 pts", "GitHub - 30 pts", "ChatGPT - 20 pts", "Stack Overflow - 5 pts"] },
+            { question: "Name a popular AI tool or model.", answers: ["ChatGPT - 40 pts", "Gemini - 30 pts", "Grok - 20 pts", "Claude - 5 pts"] },
+            { question: "What’s something you always find in a Zimbabwean kombi?", answers: ["Loud music - 40 pts", "Overcrowding - 30 pts", "Conductors shouting fares - 20 pts", "People arguing about change - 5 pts"] },
+            { question: "Name a famous tourist attraction in Zimbabwe.", answers: ["Victoria Falls - 40 pts", "Great Zimbabwe - 30 pts", "Matobo Hills - 20 pts", "Nyanga Mountains - 5 pts"] },
+            { question: "What’s something Zimbabweans do when there’s a power cut?", answers: ["Light candles - 40 pts", "Complain on social media - 30 pts", "Cook with firewood - 20 pts", "Sleep early - 5 pts"] },
+            { question: "Name a famous Zimbabwean musician.", answers: ["Winky D - 40 pts", "Jah Prayzah - 30 pts", "Oliver Mtukudzi - 20 pts", "Alick Macheso - 5 pts"] }
+        ];
+        
+        function loadQuestion() {
+            let gameArea = document.getElementById("game-area");
+            gameArea.innerHTML = '';
+            
+            if (currentQuestion < questions.length) {
+                let questionCard = document.createElement("div");
+                questionCard.classList.add("question-card", "active");
+                
+                questionCard.innerHTML = `
+                    <h2>${questions[currentQuestion].question}</h2>
+                    <div class="answer-box">
+                        ${questions[currentQuestion].answers.map(answer => `<div class='answer' onclick='revealAnswer(this)'>???</div>`).join('')}
+                    </div>
+                    <button onclick='addStrike()'>Wrong Answer (X)</button>
+                    <h3 class='strike' id='strikes'></h3>
+                    <button onclick='nextQuestion()'>Next Question</button>
+                `;
+                gameArea.appendChild(questionCard);
+            }
+        }
 
-    nextBtns.forEach((btn, index) => {
-      btn.addEventListener('click', () => {
-        cards[currentCardIndex].classList.remove('active');
-        currentCardIndex = (currentCardIndex + 1) % cards.length;
-        cards[currentCardIndex].classList.add('active');
-        fireConfetti();
-      });
-    });
-  </script>
+        function revealAnswer(element) {
+            element.innerText = questions[currentQuestion].answers[Array.from(element.parentNode.children).indexOf(element)];
+            element.classList.add("revealed");
+        }
+        
+        function addStrike() {
+            if (strikes < 3) {
+                strikes++;
+                document.getElementById("strikes").innerText = "X".repeat(strikes);
+            }
+            if (strikes === 3) {
+                document.querySelectorAll(".answer").forEach(answer => revealAnswer(answer));
+            }
+        }
+        
+        function nextQuestion() {
+            strikes = 0;
+            currentQuestion++;
+            loadQuestion();
+        }
+        
+        loadQuestion();
+    </script>
 </body>
 </html>
