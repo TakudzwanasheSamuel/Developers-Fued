@@ -6,11 +6,12 @@
     <title>Developers' Feud</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
             background-color: #282c36;
             color: white;
             padding: 20px;
+            margin: 0;
         }
         .container {
             max-width: 700px;
@@ -19,6 +20,12 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
         .question-card {
             display: none;
@@ -30,33 +37,53 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 20px;
         }
         .answer {
             width: 80%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 15px;
+            margin: 10px 0;
             border: 2px solid #555;
-            border-radius: 5px;
+            border-radius: 10px;
             background: #555;
             font-size: 18px;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
+            transform: scale(1);
+            opacity: 1;
+        }
+        .answer:hover {
+            background: #666;
+            transform: scale(1.05);
         }
         .revealed {
             background: #4CAF50;
             color: white;
             font-weight: bold;
             transform: scale(1.1);
+            animation: pop 0.5s ease-in-out;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
         }
         .strike {
             color: red;
             font-size: 50px;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 20px;
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
         }
         button {
-            margin-top: 10px;
+            margin-top: 20px;
             padding: 10px 20px;
             border: none;
             background: #007BFF;
@@ -64,19 +91,24 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s;
         }
         button:hover {
             background: #0056b3;
+            transform: scale(1.05);
+        }
+        .question-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Developers' Feud</h1>
-        
-        <div id="game-area">
-        </div>
+        <div id="game-area"></div>
     </div>
 
     <script>
@@ -92,7 +124,12 @@
             { question: "What’s something you always find in a Zimbabwean kombi?", answers: ["Loud music - 40 pts", "Overcrowding - 30 pts", "Conductors shouting fares - 20 pts", "People arguing about change - 5 pts"] },
             { question: "Name a famous tourist attraction in Zimbabwe.", answers: ["Victoria Falls - 40 pts", "Great Zimbabwe - 30 pts", "Matobo Hills - 20 pts", "Nyanga Mountains - 5 pts"] },
             { question: "What’s something Zimbabweans do when there’s a power cut?", answers: ["Light candles - 40 pts", "Complain on social media - 30 pts", "Cook with firewood - 20 pts", "Sleep early - 5 pts"] },
-            { question: "Name a famous Zimbabwean musician.", answers: ["Winky D - 40 pts", "Jah Prayzah - 30 pts", "Oliver Mtukudzi - 20 pts", "Alick Macheso - 5 pts"] }
+            { question: "Name a famous Zimbabwean musician.", answers: ["Winky D - 40 pts", "Jah Prayzah - 30 pts", "Oliver Mtukudzi - 20 pts", "Alick Macheso - 5 pts"] },
+            { question: "Name a popular programming language.", answers: ["JavaScript - 40 pts", "Python - 30 pts", "Java - 20 pts", "C++ - 5 pts"] },
+            { question: "What’s a developer’s favorite snack?", answers: ["Pizza - 40 pts", "Chips - 30 pts", "Energy drinks - 20 pts", "Chocolate - 5 pts"] },
+            { question: "What’s the most frustrating part of coding?", answers: ["Bugs - 40 pts", "Deadlines - 30 pts", "Unclear requirements - 20 pts", "Merge conflicts - 5 pts"] },
+            { question: "Name a popular version control system.", answers: ["Git - 40 pts", "SVN - 30 pts", "Mercurial - 20 pts", "Perforce - 5 pts"] },
+            { question: "What’s a developer’s favorite pastime?", answers: ["Gaming - 40 pts", "Reading tech blogs - 30 pts", "Watching tutorials - 20 pts", "Napping - 5 pts"] }
         ];
         
         function loadQuestion() {
@@ -113,6 +150,8 @@
                     <button onclick='nextQuestion()'>Next Question</button>
                 `;
                 gameArea.appendChild(questionCard);
+            } else {
+                gameArea.innerHTML = `<h2>Game Over! Thanks for playing!</h2>`;
             }
         }
 
